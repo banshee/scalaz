@@ -11,10 +11,15 @@ object build extends Build {
 
   lazy val standardSettings: Seq[Sett] = Defaults.defaultSettings ++ sbtrelease.ReleasePlugin.releaseSettings ++ Seq[Sett](
     organization := "org.scalaz",
-    scalaVersion := "2.9.2",
+    scalaVersion := "2.10.0-SNAPSHOT",
     crossScalaVersions := Seq("2.9.2", "2.10.0-M5"),
     crossVersion := CrossVersion.full,
     resolvers += "Sonatype Releases" at "https://oss.sonatype.org/content/repositories/releases",
+    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers += "Sonatype OSS Snapshots" at "http://git:8081/nexus/content/repositories/snapshots",
+    externalResolvers := Seq(
+      "RESTPhone Nexus" at "http://git:8081/nexus/content/groups/public"
+    ),
     scalacOptions <++= (scalaVersion).map((sv: String) => Seq("-deprecation", "-unchecked") ++ (if(sv.contains("2.10")) None else Some("-Ydependent-method-types"))),
     scalacOptions in (Compile, doc) <++= (baseDirectory in LocalProject("scalaz")).map {
       bd => Seq("-sourcepath", bd.getAbsolutePath, "-doc-source-url", "https://github.com/scalaz/scalaz/tree/scalaz-seven€{FILE_PATH}.scala")
@@ -194,7 +199,7 @@ object build extends Build {
     dependencies = Seq(core, concurrent, typelevel),
     settings     = standardSettings ++ Seq[Sett](
       name := "scalaz-scalacheck-binding",
-      libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.10.0" cross CrossVersion.full,
+      libraryDependencies += "org.scalacheck" % "scalacheck_2.10" % "1.10.1-SNAPSHOT",
       osgiExport("scalaz.scalacheck")
     )
   )
@@ -207,7 +212,7 @@ object build extends Build {
       name := "scalaz-tests",
       libraryDependencies ++= Seq(
         "org.specs2" %% "specs2" % "1.11" % "test" cross CrossVersion.full,
-        "org.scalacheck" %% "scalacheck" % "1.10.0" % "test" cross CrossVersion.full
+        "org.scalacheck" % "scalacheck_2.10" % "1.10.1-SNAPSHOT" % "test"
       )
     )
   )
