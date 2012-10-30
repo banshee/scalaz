@@ -211,7 +211,7 @@ object build extends Build {
     settings = standardSettings ++Seq[Sett](
       name := "scalaz-tests",
       libraryDependencies ++= Seq(
-        "org.specs2" %% "specs2" % "1.11" % "test" cross CrossVersion.full,
+        "org.specs2" % "specs2_2.10" % "1.11" % "test",
         "org.scalacheck" % "scalacheck_2.10" % "1.10.1-SNAPSHOT" % "test"
       )
     )
